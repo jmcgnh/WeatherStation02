@@ -5,6 +5,7 @@
 #define DEBUG_ESP_WIFI
 #define DEBUG_ESP_PORT Serial
 
+#include "Arduino.h"
 #include <ESP8266WiFi.h>
 #include "DHT.h"
 #include <Wire.h>

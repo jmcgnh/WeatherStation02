@@ -1,6 +1,7 @@
 # Don't give away secrets
 *.secret
 secret.h
+certs.h
 
 # Prerequisites
 *.d
@@ -41,3 +42,6 @@ secret.h
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# tools imported from elsewhere
+tools/*

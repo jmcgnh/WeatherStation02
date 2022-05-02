@@ -12,6 +12,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include "secret.h" // defines IDs and PASSWDs
+#include "certs.h" // part of BearSSL setup not yet done, so these are the wrong certs
 
 
 #define DHTPIN          2   //Pin to attach the DHT - on D1 mini, what's labeled as D4 is GPIO2
@@ -26,11 +27,13 @@ const char vtimestamp[] =  __DATE__ " " __TIME__;
 const char versionstring[] = "20180104.1630.1";
 
 ///////////////Weather////////////////////////
-char wu_host [] = "weatherstation.wunderground.com";
+// char wu_host [] = "weatherstation.wunderground.com"; // now defined in certs.h
 char wu_WEBPAGE [] = "/weatherstation/updateweatherstation.php";
 char wu_ID [] = MYWUID;
 char wu_PASSWORD [] = WUPASSWD;
 char WU_cert_fingerprint[] = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F B1 5F E5";
+
+X509List cert(cert_DigiCert_Global_Root_CA);
 
 ///////////////Phant////////////////////////
 //char host [] = "10.XXX.XXX.XXX";
@@ -193,20 +196,37 @@ void loop() {
   Serial.print("humidity=  ");  Serial.println(humidity);
   Serial.println("vvvvvvvvvvvvvvvvvvvvvvvvvv");
 
+  // Set time via NTP, as required for x.509 validation
+  configTime(3 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+
+  Serial.print("Waiting for NTP time sync: ");
+  time_t now = time(nullptr);
+  while (now < 8 * 3600 * 2) {
+    delay(500);
+    Serial.print(".");
+    now = time(nullptr);
+  }
+  Serial.println("");
+  struct tm timeinfo;
+  gmtime_r(&now, &timeinfo);
+  Serial.print("Current time: ");
+  Serial.print(asctime(&timeinfo));
+
   //Send data to Weather Underground
   Serial.print("sending data to ");
   Serial.println(wu_host);
 
    // Using HTTPS protocol
    WiFiClientSecure client;
+   Serial.print("Connecting to ");
+   Serial.print(wu_host);
+
+   Serial.printf("Using certificate: %s\n", cert_DigiCert_Global_Root_CA);
+   client.setTrustAnchors(&cert);
+
    if (!client.connect(wu_host, 443)) {
      Serial.println("Conection Fail");
     return;
-   }
-   if (client.verify(WU_cert_fingerprint, wu_host)) {
-     Serial.println("certificate matches");
-   } else {
-     Serial.println("certificate doesn't match");
    }
 
 //   // Using HTTP protocol

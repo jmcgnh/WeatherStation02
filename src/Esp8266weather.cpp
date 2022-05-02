@@ -51,6 +51,10 @@ char WU_cert_fingerprint[] = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F
 //                  "Content-Type: application/x-www-form-urlencoded\r\n\r\n";
 //////////////////////////////////////////
 
+///// forward declarations /////
+double dewPoint(double tempf, double humidity);
+void sleepMode();
+
 DHT dht(DHTPIN, DHTTYPE);
 
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);

@@ -1,7 +1,8 @@
 # Don't give away secrets
 *.secret
 secret.h
-certs.h
+*certs.h
+*_secrets.h
 
 # Prerequisites
 *.d

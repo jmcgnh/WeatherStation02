@@ -11,9 +11,9 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
-#include "secret.h" // defines IDs and PASSWDs
-#include "certs.h" // part of BearSSL setup not yet done, so these are the wrong certs
-
+#include "wifi_secrets.h" // defines IDs and PASSWDs
+#include "wu_secrets.h" // part of BearSSL setup not yet done, so these are the wrong certs
+#include "phant_secrets.h"
 
 #define DHTPIN          2   //Pin to attach the DHT - on D1 mini, what's labeled as D4 is GPIO2
 #define DHTTYPE DHT22       //type of DTH  
@@ -24,16 +24,17 @@ const char* password = SSIDPASSWD;
 const int sleepTimeS = 600; // in seconds; 18000 for Half hour, 300 for 5 minutes etc.
 const char vfname[] =  __FILE__ ;
 const char vtimestamp[] =  __DATE__ " " __TIME__;
-const char versionstring[] = "20180104.1630.1";
+const char versionstring[] = "20220503.0330.1";
 
 ///////////////Weather////////////////////////
 // char wu_host [] = "weatherstation.wunderground.com"; // now defined in certs.h
-char wu_WEBPAGE [] = "/weatherstation/updateweatherstation.php";
+
 char wu_ID [] = MYWUID;
 char wu_PASSWORD [] = WUPASSWD;
 char WU_cert_fingerprint[] = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F B1 5F E5";
 
-X509List cert(cert_DigiCert_Global_Root_CA);
+X509List wu_cert(cert_DigiCert_Global_Root_CA);
+X509List phant_cert(cert_ISRG_Root_X1);
 
 ///////////////Phant////////////////////////
 //char host [] = "10.XXX.XXX.XXX";
@@ -211,8 +212,11 @@ void loop() {
   gmtime_r(&now, &timeinfo);
   Serial.print("Current time: ");
   Serial.print(asctime(&timeinfo));
+  Serial.println(" UTC");
 
+  ///////////////////////////////////
   //Send data to Weather Underground
+  ///////////////////////////////////
   Serial.print("sending data to ");
   Serial.println(wu_host);
 
@@ -221,8 +225,8 @@ void loop() {
    Serial.print("Connecting to ");
    Serial.print(wu_host);
 
-   Serial.printf("Using certificate: %s\n", cert_DigiCert_Global_Root_CA);
-   client.setTrustAnchors(&cert);
+   // Serial.printf("Using certificate: %s\n", cert_DigiCert_Global_Root_CA);
+   client.setTrustAnchors(&wu_cert);
 
    if (!client.connect(wu_host, 443)) {
      Serial.println("Conection Fail");
@@ -271,6 +275,58 @@ void loop() {
     }
   }
   Serial.println("----------");
+
+  ///////////////////////////////////
+  //Send data to phant
+  ///////////////////////////////////
+  Serial.print("sending data to ");
+  Serial.println(phant_host);
+
+   // Using HTTPS protocol
+   
+   Serial.print("Connecting to ");
+   Serial.println(phant_host);
+
+   // Serial.printf("Using certificate: %s\n", cert_ISRG_Root_X1);
+   client.setTrustAnchors(&phant_cert);
+
+   if (!client.connect(phant_host, 443)) {
+     Serial.println("Conection Fail");
+    return;
+   }
+
+  ReqData =  "tempf=";     ReqData += tempf;
+  ReqData += "&dewpoint=";  ReqData += dewptf;
+  ReqData += "&tempc=";     ReqData += tempc;
+  ReqData += "&humidity=";  ReqData += humidity;
+  ReqData += "&baromin=";   ReqData += baromin;
+  ReqData += "&utcdate=";   ReqData += asctime(&timeinfo);
+        ReqData += "\r\n";
+  Serial.println("ReqData= " + ReqData);
+
+  WebReq = "POST /";        WebReq += phant_WebPage; WebReq += " HTTP/1.1\r\n";
+  WebReq += "Host: ";             WebReq += phant_host;    WebReq += "\r\n";
+  WebReq += "Phant-Private-Key: "; WebReq += phant_PrivKey; WebReq += "\r\n";
+  WebReq += "Connection: "        "close"        "\r\n";
+  WebReq += "Content-Length: ";   WebReq += ReqData.length(); WebReq += "\r\n";
+  WebReq += "Content-Type: application/x-www-form-urlencoded\r\n";
+  WebReq += "\r\n"; // end of headers
+  WebReq += ReqData; // POST data
+
+  Serial.println("WebReq= " + WebReq);
+
+  client.print(WebReq);
+ 
+  Serial.println("-----Response-----");
+  while (client.connected())
+  {
+    if (client.available())
+    {
+      String line = client.readStringUntil('\n');
+      Serial.println(line);
+    }
+  }
+
   delay(2500);
   sleepMode();
 }

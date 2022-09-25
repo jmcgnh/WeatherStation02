@@ -8,13 +8,13 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/Users/jmcgn/Documents/Weather02/include",
-                "c:/Users/jmcgn/Documents/Weather02/src",
+                "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/include",
+                "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/src",
                 "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
-                "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/DHT sensor library",
-                "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/Adafruit BMP085 Unified",
+                "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/DHT sensor library",
+                "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/Adafruit BMP085 Unified",
                 "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/libraries/Wire",
-                "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/Adafruit Unified Sensor",
+                "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/Adafruit Unified Sensor",
                 "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
                 "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/cores/esp8266",
                 "C:/Users/jmcgn/.platformio/packages/toolchain-xtensa/include",
@@ -58,13 +58,13 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/jmcgn/Documents/Weather02/include",
-                    "c:/Users/jmcgn/Documents/Weather02/src",
+                    "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/include",
+                    "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/src",
                     "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
-                    "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/DHT sensor library",
-                    "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/Adafruit BMP085 Unified",
+                    "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/DHT sensor library",
+                    "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/Adafruit BMP085 Unified",
                     "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/libraries/Wire",
-                    "c:/Users/jmcgn/Documents/Weather02/.pio/libdeps/d1_mini/Adafruit Unified Sensor",
+                    "c:/Users/jmcgn/OneDrive/Documents/PlatformIO/Projects/WeatherStation02/.pio/libdeps/d1_mini/Adafruit Unified Sensor",
                     "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
                     "C:/Users/jmcgn/.platformio/packages/framework-arduinoespressif8266/cores/esp8266",
                     "C:/Users/jmcgn/.platformio/packages/toolchain-xtensa/include",
@@ -107,7 +107,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=50205",
+                "PLATFORMIO=60104",
                 "ESP8266",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_ESP8266_WEMOS_D1MINI",

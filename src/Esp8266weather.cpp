@@ -12,7 +12,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 #include "wifi_secrets.h" // defines IDs and PASSWDs
-#include "wu_secrets.h" // part of BearSSL setup not yet done, so these are the wrong certs
+#include "wu_secrets.h" // these certs periodically expire, need a better solution
 #include "phant_secrets.h"
 
 #define DHTPIN          2   //Pin to attach the DHT - on D1 mini, what's labeled as D4 is GPIO2
@@ -24,7 +24,7 @@ const char* password = SSIDPASSWD;
 const int sleepTimeS = 600; // in seconds; 18000 for Half hour, 300 for 5 minutes etc.
 const char vfname[] =  __FILE__ ;
 const char vtimestamp[] =  __DATE__ " " __TIME__;
-const char versionstring[] = "20220503.0330.1";
+const char versionstring[] = "20220925.1545.1";
 
 ///////////////Weather////////////////////////
 // char wu_host [] = "weatherstation.wunderground.com"; // now defined in certs.h

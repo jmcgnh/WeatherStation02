@@ -29,7 +29,6 @@ const char vtimestamp[] =  __DATE__ " " __TIME__;
 const char versionstring[] = "20230415.0207.1";
 
 ///////////////Weather////////////////////////
-// char wu_host [] = "weatherstation.wunderground.com"; // now defined in certs.h
 
 char wu_ID [] = MYWUID;
 char wu_PASSWORD [] = WUPASSWD;
@@ -38,25 +37,6 @@ char WU_cert_fingerprint[] = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F
 X509List wu_cert(cert_DigiCert_Global_Root_CA);
 X509List phant_cert(cert_ISRG_Root_X1);
 
-///////////////Phant////////////////////////
-//char host [] = "10.XXX.XXX.XXX";
-//char WEBPAGE [] = "/weatherstation/updateweatherstation.php";
-//char ID [] = MYWUID;
-//char PASSWORD [] = WUPASSWD;
-//char *WU_cert_fingerprint = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F B1 5F E5";
-
-
-
-/////////////IFTTT/////////////////////// not currently used
-//const char* host = "maker.ifttt.com";//dont change
-//const String IFTTT_Event = "YourEventName";
-//const int puertoHost = 80;
-//const String Maker_Key = "YourMakerKey";
-//String conexionIF = "POST /trigger/"+IFTTT_Event+"/with/key/"+Maker_Key +" HTTP/1.1\r\n" +
-//                  "Host: " + host + "\r\n" +
-//                  "Content-Type: application/x-www-form-urlencoded\r\n\r\n";
-//////////////////////////////////////////
-
 ///// forward declarations /////
 double dewPoint(double tempf, double humidity);
 void sleepMode();
@@ -64,7 +44,6 @@ void sleepMode();
 DHT dht(DHTPIN, DHTTYPE);
 
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
-
 
 void setup()
 {
@@ -80,7 +59,6 @@ void setup()
   Serial.print("timestamp (local time): ");
   Serial.println(vtimestamp);
   Serial.println();
-
 
   // Connect D0 to RST to wake up
   pinMode(D0, WAKEUP_PULLUP);
@@ -115,7 +93,6 @@ void setup()
 
   /* Display some basic information on this sensor */
   // displaySensorDetails();
-
 }
 
 void loop() {

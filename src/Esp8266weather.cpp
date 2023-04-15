@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
 #include "DHT.h"
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -36,6 +37,15 @@ char WU_cert_fingerprint[] = "12 DB BB 24 8E 0F 6F D4 63 EC 45 DD 5B ED 37 D7 6F
 
 X509List wu_cert(cert_DigiCert_Global_Root_CA);
 X509List phant_cert(cert_ISRG_Root_X1);
+
+//////////////syslog//////////////////////////
+
+// A UDP instance to let us send and receive packets over UDP
+WiFiUDP udpClient;
+
+// Create a new syslog instance with LOG_KERN facility
+Syslog syslog(udpClient, SYSLOG_SERVER, SYSLOG_PORT, DEVICE_HOSTNAME, APP_NAME, LOG_KERN);
+int iteration = 1;
 
 ///// forward declarations /////
 double dewPoint(double tempf, double humidity);
@@ -80,6 +90,7 @@ void setup()
   }
   Serial.print("wifi status= ");     Serial.println(wifistatus);
   Serial.println( "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+  syslog.log(LOG_INFO, "wifistatus");
 
   // BMP test code
   // Serial.println("Pressure Sensor Test"); Serial.println("");
@@ -192,6 +203,8 @@ void loop() {
   Serial.print("Current time: ");
   Serial.print(asctime(&timeinfo));
   Serial.println(" UTC");
+  syslog.log(LOG_INFO, asctime(&timeinfo));
+
 
   ///////////////////////////////////
   //Send data to Weather Underground
@@ -243,7 +256,8 @@ void loop() {
   Serial.println("WebReq= " + WebReq);
 
   client.print(WebReq);
-  
+  syslog.log(LOG_INFO, "WeatherUnderground request sent");
+
   Serial.println("-----Response-----");
   while (client.connected())
   {
@@ -251,6 +265,7 @@ void loop() {
     {
       String line = client.readStringUntil('\n');
       Serial.println(line);
+      syslog.log(LOG_INFO, line);
     }
   }
   Serial.println("----------");
@@ -295,6 +310,8 @@ void loop() {
   Serial.println("WebReq= " + WebReq);
 
   client.print(WebReq);
+  syslog.log(LOG_INFO, "Phant request sent");
+
  
   Serial.println("-----Response-----");
   while (client.connected())
@@ -303,6 +320,7 @@ void loop() {
     {
       String line = client.readStringUntil('\n');
       Serial.println(line);
+      syslog.log(LOG_INFO, line);
     }
   }
 

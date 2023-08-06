@@ -27,7 +27,7 @@ const char* password = SSIDPASSWD;
 const int sleepTimeS = 600; // in seconds; 18000 for Half hour, 300 for 5 minutes etc.
 const char vfname[] =  __FILE__ ;
 const char vtimestamp[] =  __DATE__ " " __TIME__;
-const char versionstring[] = "20230415.0207.1";
+const char versionstring[] = "20230806.0220.1";
 
 ///////////////Weather////////////////////////
 
@@ -88,6 +88,7 @@ void setup()
     }
     Serial.println();
   }
+
   Serial.print("wifi status= ");     Serial.println(wifistatus);
   Serial.println( "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   syslog.log(LOG_INFO, "wifistatus");

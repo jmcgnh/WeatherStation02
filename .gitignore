@@ -3,6 +3,8 @@
 secret.h
 *certs.h
 *_secrets.h
+/logs
+/data
 
 # Prerequisites
 *.d

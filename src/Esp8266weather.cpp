@@ -27,7 +27,7 @@ const char* password = SSIDPASSWD;
 const int sleepTimeS = 600; // in seconds; 18000 for Half hour, 300 for 5 minutes etc.
 const char vfname[] =  __FILE__ ;
 const char vtimestamp[] =  __DATE__ " " __TIME__;
-const char versionstring[] = "20230806.0220.1";
+const char versionstring[] = "20250601.0235.1";
 
 ///////////////Weather////////////////////////
 
@@ -223,7 +223,7 @@ void loop() {
 
    if (!client.connect(wu_host, 443)) {
      Serial.println("Conection Fail");
-    return;
+     // return;
    }
 
 //   // Using HTTP protocol
@@ -361,6 +361,9 @@ double dewPoint(double tempf, double humidity) //Calculate dew Point
 
 void sleepMode() {
   Serial.print("Going into deep sleep now...");
+  syslog.log(LOG_INFO, "Going into deep sleep now...");
+  delay(1000); // give time to send last messages
+  
   ESP.deepSleep(sleepTimeS * 1000000);
 }
 
